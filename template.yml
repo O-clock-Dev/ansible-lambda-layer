@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  AnsibleLayer
+
+  Layer to provide ansible to your serverless application
+
+Resources:
+  ansibleLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: ansible-playbook
+      Description: Layer for use Ansible playbooks
+      ContentUri: dependencies/
+      CompatibleRuntimes:
+        - python3.6
+        - python3.7
+        - python3.8
+      RetentionPolicy: Retain
+  AnsibleStart:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ansible_playbook/
+      Handler: app.lambda_handler
+      Runtime: python3.7
+      #Layers:
+      #  arn:aws:lambda:eu-west-3:507680425604:layer:ansible-layer
+      Description: 'start playbook'
+      Role: >-
+        arn:aws:iam::507680425604:role/vm-teacher-role
+
+
+
+
